@@ -6,6 +6,7 @@
     "file-name-casing": [
       false,
       "camel-case"
-    ]
+    ],
+    "no-empty-interface": false
   }
 }
