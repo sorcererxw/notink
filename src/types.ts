@@ -102,30 +102,6 @@ export interface BlockValue<T extends BlockType> {
   last_edited_time: number
   type: T
   version: number
-
-  // ignore_block_count?: boolean,
-  // format?: { // only for page
-  //     table_wrap?: boolean
-  //     list_properties?: {
-  //         visible: boolean,
-  //         property: string
-  //     }[],
-  //     table_properties?: {
-  //         width: number,
-  //         visible: boolean,
-  //         property: string
-  //     }[]
-  // },
-  // properties?: {
-  //     // TODO text style type
-  //     title?: [string, [TextStyleType, string?][]?][]
-  //     list_properties?: {
-  //         visible: boolean,
-  //         property: string
-  //     }[],
-  //     [name: string]: any
-  // }
-  // query?: CollectionQuery
 }
 
 interface BaseTextBlockValue {
@@ -182,7 +158,8 @@ export interface ToDoBlockValue extends BlockValue<BlockType.TO_DO> {
   }
 }
 
-export interface DividerBlockValue extends BlockValue<BlockType.DIVIDER> {}
+export interface DividerBlockValue extends BlockValue<BlockType.DIVIDER> {
+}
 
 export interface CodeBlockValue extends BlockValue<BlockType.CODE> {
   properties?: {
@@ -216,17 +193,22 @@ export interface ImageBlockValue extends BlockValue<BlockType.IMAGE> {
   file_ids?: string[]
 }
 
-export interface TextBlockValue extends BlockValue<BlockType.TEXT>, BaseTextBlockValue {}
+export interface TextBlockValue extends BlockValue<BlockType.TEXT>, BaseTextBlockValue {
+}
 
-export interface QuoteBlockValue extends BlockValue<BlockType.QUOTE>, BaseTextBlockValue {}
+export interface QuoteBlockValue extends BlockValue<BlockType.QUOTE>, BaseTextBlockValue {
+}
 
-export interface HeaderBlockValue extends BlockValue<BlockType.HEADER>, BaseTextBlockValue {}
+export interface HeaderBlockValue extends BlockValue<BlockType.HEADER>, BaseTextBlockValue {
+}
 
-export interface SubHeaderBlockValue extends BlockValue<BlockType.SUB_HEADER>, BaseTextBlockValue {}
+export interface SubHeaderBlockValue extends BlockValue<BlockType.SUB_HEADER>, BaseTextBlockValue {
+}
 
 export interface SubSubHeaderBlockValue
   extends BlockValue<BlockType.SUB_SUB_HEADER>,
-    BaseTextBlockValue {}
+    BaseTextBlockValue {
+}
 
 export interface PageBlockValue extends BlockValue<BlockType.PAGE>, BasePermissionValue {
   content: string[]
@@ -283,7 +265,8 @@ export interface VideoBlockValue extends BlockValue<BlockType.VIDEO> {
   }
 }
 
-export interface EquationBlockValue extends BlockValue<BlockType.EQUATION>, BaseTextBlockValue {}
+export interface EquationBlockValue extends BlockValue<BlockType.EQUATION>, BaseTextBlockValue {
+}
 
 export interface ColumnListBlockValue extends BlockValue<BlockType.COLUMN_LIST> {
   content?: BlockId[]
@@ -298,29 +281,44 @@ export interface FileBlockValue extends BlockValue<BlockType.FILE> {
   }
 }
 
-export interface EmbedBlockValue extends BlockValue<BlockType.EMBED>, BaseEmbedBlockType {}
+export interface EmbedBlockValue extends BlockValue<BlockType.EMBED>, BaseEmbedBlockType {
+}
 
-export interface LoomBlockValue extends BlockValue<BlockType.LOOM>, BaseEmbedBlockType {}
+export interface AudioBlockValue extends BlockValue<BlockType.AUDIO>, BaseEmbedBlockType {
+}
 
-export interface MapsBlockValue extends BlockValue<BlockType.MAPS>, BaseEmbedBlockType {}
+export interface LoomBlockValue extends BlockValue<BlockType.LOOM>, BaseEmbedBlockType {
+}
 
-export interface FigmaBlockValue extends BlockValue<BlockType.FIGMA>, BaseEmbedBlockType {}
+export interface MapsBlockValue extends BlockValue<BlockType.MAPS>, BaseEmbedBlockType {
+}
 
-export interface GistBlockValue extends BlockValue<BlockType.GIST>, BaseEmbedBlockType {}
+export interface FigmaBlockValue extends BlockValue<BlockType.FIGMA>, BaseEmbedBlockType {
+}
 
-export interface CodepenBlockValue extends BlockValue<BlockType.CODEPEN>, BaseEmbedBlockType {}
+export interface GistBlockValue extends BlockValue<BlockType.GIST>, BaseEmbedBlockType {
+}
 
-export interface DriveBlockValue extends BlockValue<BlockType.DRIVE>, BaseEmbedBlockType {}
+export interface CodepenBlockValue extends BlockValue<BlockType.CODEPEN>, BaseEmbedBlockType {
+}
 
-export interface FramerBlockValue extends BlockValue<BlockType.FRAMER>, BaseEmbedBlockType {}
+export interface DriveBlockValue extends BlockValue<BlockType.DRIVE>, BaseEmbedBlockType {
+}
 
-export interface PdfBlockValue extends BlockValue<BlockType.PDF>, BaseEmbedBlockType {}
+export interface FramerBlockValue extends BlockValue<BlockType.FRAMER>, BaseEmbedBlockType {
+}
 
-export interface InvisionBlockValue extends BlockValue<BlockType.INVISION>, BaseEmbedBlockType {}
+export interface PdfBlockValue extends BlockValue<BlockType.PDF>, BaseEmbedBlockType {
+}
 
-export interface TweetBlockValue extends BlockValue<BlockType.TWEET>, BaseEmbedBlockType {}
+export interface InvisionBlockValue extends BlockValue<BlockType.INVISION>, BaseEmbedBlockType {
+}
 
-export interface TypeformBlockValue extends BlockValue<BlockType.TYPEFORM>, BaseEmbedBlockType {}
+export interface TweetBlockValue extends BlockValue<BlockType.TWEET>, BaseEmbedBlockType {
+}
+
+export interface TypeformBlockValue extends BlockValue<BlockType.TYPEFORM>, BaseEmbedBlockType {
+}
 
 export interface CollectionValue {
   alive: boolean
@@ -363,7 +361,7 @@ export interface CollectionViewValue {
 export interface CollectionQuery {
   filter_operator: string
   filter?: {
-    comparator: string,
+    comparator: string
     id: string
     property: string
     type: string

@@ -8,5 +8,10 @@
       "camel-case"
     ],
     "no-empty-interface": false
+  },
+  "linterOptions": {
+    "exclude": [
+      "dist/**/*.ts"
+    ]
   }
 }
