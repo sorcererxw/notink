@@ -1,18 +1,26 @@
 {
   "name": "notink",
   "version": "0.0.1",
-  "description": "",
+  "description": "A full function Notion.so api library.",
   "main": "dist/index.ts",
   "scripts": {
     "lint": "tslint --project .",
     "compile": "tsc",
-    "build": "npm run lint & npm run compile"
+    "build": "npm run lint & npm run compile",
+    "prettier": "prettier --check \"src/**/*.ts\" --write"
   },
   "repository": {
     "url": "https://github.com/sorcererxw/notink"
   },
   "homepage": "https://github.com/sorcererxw/notink",
-  "keywords": [],
+  "keywords": [
+    "notion",
+    "notion api"
+  ],
+  "bugs": {
+    "url": "https://github.com/sorcererxw/notink/issues/new",
+    "email": "tujipqy@gmail.com"
+  },
   "author": "SorcererXW",
   "license": "MIT",
   "dependencies": {
@@ -25,6 +33,13 @@
     "jest": "^24.8.0",
     "tslint": "^5.17.0",
     "tslint-jike-node": "0.0.17",
-    "typescript": "^3.5.2"
+    "typescript": "^3.5.2",
+    "husky": "^2.5.0",
+    "prettier": "^1.18.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run prettier"
+    }
   }
 }
