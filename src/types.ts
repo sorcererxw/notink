@@ -363,7 +363,7 @@ export interface CollectionViewValue {
 export interface CollectionQuery {
   filter_operator: string
   filter?: {
-    comparator: string
+    comparator: string,
     id: string
     property: string
     type: string
