@@ -2,11 +2,16 @@
   "name": "notink",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "tslint --project"
+    "lint": "tslint --project .",
+    "compile": "tsc",
+    "build": "npm run lint & npm run compile"
   },
+  "repository": {
+    "url": "https://github.com/sorcererxw/notink"
+  },
+  "homepage": "https://github.com/sorcererxw/notink",
   "keywords": [],
   "author": "SorcererXW",
   "license": "MIT",
