@@ -1,5 +1,6 @@
 export const enum RoleType {
   EDITOR = 'editor',
+  READER = 'reader',
 }
 
 export const enum BlockType {

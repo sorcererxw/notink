@@ -40,7 +40,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run prettier"
+      "pre-commit": "prettier --check \"src/**/*.ts\" --write"
     }
   }
 }

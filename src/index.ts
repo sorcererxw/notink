@@ -40,7 +40,6 @@ export async function loadPageChunk(data: {
   limit: number
   pageId: string
   verticalColumns: boolean
-  // TODO: update cursor
   cursor: { stack: Cursor[] }
 }): Promise<{
   cursor: { stack: Cursor[] }
