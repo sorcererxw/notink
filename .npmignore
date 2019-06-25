@@ -7,3 +7,4 @@ tslint.json
 .vscode/
 .prettierrc
 .prettierignore
+.github

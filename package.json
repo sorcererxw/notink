@@ -1,14 +1,16 @@
 {
   "name": "notink",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.7",
   "description": "A full function Notion.so api library.",
   "main": "dist/lib/index.js",
   "types": "dist/types/index.d.ts",
   "scripts": {
     "lint": "tslint --project .",
     "compile": "tsc",
-    "build": "npm run lint & npm run compile",
-    "prettier": "prettier --check \"src/**/*.ts\" --write"
+    "clean": "rm -rf dist",
+    "purge": "rm -rf package-lock.json node_modules && npm run clean",
+    "build": "npm run clean && npm run lint & npm run compile",
+    "prettier": "prettier --config .prettierrc --write '**/*'"
   },
   "repository": {
     "url": "https://github.com/sorcererxw/notink"
