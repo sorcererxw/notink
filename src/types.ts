@@ -73,6 +73,7 @@ export interface Cursor {
   index: number
 }
 
+// Workspace information
 export interface SpaceValue {
   beta_enabled: boolean
   created_by: string
@@ -121,11 +122,12 @@ interface BasePermissionValue {
 
 interface BaseEmbedBlockType {
   format?: {
-    block_full_width: boolean
-    block_height: number
-    block_page_width: boolean
-    block_preserve_scale: boolean
     block_width: number
+    block_height?: number
+    block_full_width: boolean
+    block_page_width: boolean
+    block_aspect_ratio?: number
+    block_preserve_scale: boolean
     display_source: string
   }
   properties?: {
@@ -159,8 +161,7 @@ export interface ToDoBlockValue extends BlockValue<BlockType.TO_DO> {
   }
 }
 
-export interface DividerBlockValue extends BlockValue<BlockType.DIVIDER> {
-}
+export interface DividerBlockValue extends BlockValue<BlockType.DIVIDER> {}
 
 export interface CodeBlockValue extends BlockValue<BlockType.CODE> {
   properties?: {
@@ -177,39 +178,21 @@ export interface CollectionViewBlockValue extends BlockValue<BlockType.COLLECTIO
   view_ids: string[]
 }
 
-export interface ImageBlockValue extends BlockValue<BlockType.IMAGE> {
-  format?: {
-    block_aspect_ratio: number // 0.7289156626506024
-    block_full_width: boolean
-    block_height: number // 363
-    block_page_width: boolean
-    block_preserve_scale: boolean
-    block_width: number // 498
-    display_source: string /* "https://s3-us-west-2.amazonaws.com/secure.notion-static.com/
-        b10b10c5-6817-41fb-a66a-6f39289b29c4/Untitled.png" */
-  }
-  properties: {
-    source: string[][]
-  }
+export interface ImageBlockValue extends BlockValue<BlockType.IMAGE>, BaseEmbedBlockType {
   file_ids?: string[]
 }
 
-export interface TextBlockValue extends BlockValue<BlockType.TEXT>, BaseTextBlockValue {
-}
+export interface TextBlockValue extends BlockValue<BlockType.TEXT>, BaseTextBlockValue {}
 
-export interface QuoteBlockValue extends BlockValue<BlockType.QUOTE>, BaseTextBlockValue {
-}
+export interface QuoteBlockValue extends BlockValue<BlockType.QUOTE>, BaseTextBlockValue {}
 
-export interface HeaderBlockValue extends BlockValue<BlockType.HEADER>, BaseTextBlockValue {
-}
+export interface HeaderBlockValue extends BlockValue<BlockType.HEADER>, BaseTextBlockValue {}
 
-export interface SubHeaderBlockValue extends BlockValue<BlockType.SUB_HEADER>, BaseTextBlockValue {
-}
+export interface SubHeaderBlockValue extends BlockValue<BlockType.SUB_HEADER>, BaseTextBlockValue {}
 
 export interface SubSubHeaderBlockValue
   extends BlockValue<BlockType.SUB_SUB_HEADER>,
-    BaseTextBlockValue {
-}
+    BaseTextBlockValue {}
 
 export interface PageBlockValue extends BlockValue<BlockType.PAGE>, BasePermissionValue {
   content: string[]
@@ -252,22 +235,11 @@ export interface ColumnBlockValue extends BlockValue<BlockType.COLUMN> {
   }
 }
 
-export interface VideoBlockValue extends BlockValue<BlockType.VIDEO> {
+export interface VideoBlockValue extends BlockValue<BlockType.VIDEO>, BaseEmbedBlockType {
   file_ids?: string[]
-  format?: {
-    block_full_width: boolean
-    block_page_width: boolean
-    block_preserve_scale: boolean
-    block_width: number
-    display_source: string
-  }
-  properties: {
-    source: string[][]
-  }
 }
 
-export interface EquationBlockValue extends BlockValue<BlockType.EQUATION>, BaseTextBlockValue {
-}
+export interface EquationBlockValue extends BlockValue<BlockType.EQUATION>, BaseTextBlockValue {}
 
 export interface ColumnListBlockValue extends BlockValue<BlockType.COLUMN_LIST> {
   content?: BlockId[]
@@ -282,44 +254,100 @@ export interface FileBlockValue extends BlockValue<BlockType.FILE> {
   }
 }
 
-export interface EmbedBlockValue extends BlockValue<BlockType.EMBED>, BaseEmbedBlockType {
+export interface EmbedBlockValue extends BlockValue<BlockType.EMBED>, BaseEmbedBlockType {}
+
+export interface AudioBlockValue extends BlockValue<BlockType.AUDIO>, BaseEmbedBlockType {}
+
+export interface LoomBlockValue extends BlockValue<BlockType.LOOM>, BaseEmbedBlockType {}
+
+export interface MapsBlockValue extends BlockValue<BlockType.MAPS>, BaseEmbedBlockType {}
+
+export interface FigmaBlockValue extends BlockValue<BlockType.FIGMA>, BaseEmbedBlockType {}
+
+export interface GistBlockValue extends BlockValue<BlockType.GIST>, BaseEmbedBlockType {}
+
+export interface CodepenBlockValue extends BlockValue<BlockType.CODEPEN>, BaseEmbedBlockType {}
+
+export interface DriveBlockValue extends BlockValue<BlockType.DRIVE>, BaseEmbedBlockType {}
+
+export interface FramerBlockValue extends BlockValue<BlockType.FRAMER>, BaseEmbedBlockType {}
+
+export interface PdfBlockValue extends BlockValue<BlockType.PDF>, BaseEmbedBlockType {}
+
+export interface InvisionBlockValue extends BlockValue<BlockType.INVISION>, BaseEmbedBlockType {}
+
+export interface TweetBlockValue extends BlockValue<BlockType.TWEET>, BaseEmbedBlockType {}
+
+export interface TypeformBlockValue extends BlockValue<BlockType.TYPEFORM>, BaseEmbedBlockType {}
+
+export const enum SchemeType {
+  TITLE = 'title',
+  CHECKBOX = 'checkbox',
+  LAST_EDITED_TIME = 'last_edited_time',
+  MULTI_SELECT = 'multi_select',
+  DATE = 'date',
+  CREATED_TIME = 'created_time',
+  TEXT = 'text',
+  PHONE_NUMBER = 'phone_number',
+  FILE = 'file',
+  FORMULA = 'formula',
 }
 
-export interface AudioBlockValue extends BlockValue<BlockType.AUDIO>, BaseEmbedBlockType {
+export interface Scheme<T extends SchemeType> {
+  name: string
+  type: T
 }
 
-export interface LoomBlockValue extends BlockValue<BlockType.LOOM>, BaseEmbedBlockType {
+// TODO
+export const enum FormulaType {
+  OPERATOR = 'operator',
+  CONSTANT = 'constant',
+  SYMBOL = 'symbol',
 }
 
-export interface MapsBlockValue extends BlockValue<BlockType.MAPS>, BaseEmbedBlockType {
+export const enum FormulaResultType {
+  NUMBER = 'number',
 }
 
-export interface FigmaBlockValue extends BlockValue<BlockType.FIGMA>, BaseEmbedBlockType {
+export const enum FormulaOperatorType {
+  PLUS = '+',
 }
 
-export interface GistBlockValue extends BlockValue<BlockType.GIST>, BaseEmbedBlockType {
+export interface FormulaObject {
+  type: FormulaType
+  result_type: FormulaResultType
+  operator?: FormulaOperatorType
+  name?: string
+  value?: string
+  args?: FormulaObject[]
 }
 
-export interface CodepenBlockValue extends BlockValue<BlockType.CODEPEN>, BaseEmbedBlockType {
+export interface FormulaScheme extends Scheme<SchemeType.FORMULA> {
+  formula?: FormulaObject
 }
 
-export interface DriveBlockValue extends BlockValue<BlockType.DRIVE>, BaseEmbedBlockType {
+export interface TitleScheme extends Scheme<SchemeType.TITLE> {}
+
+export interface CheckboxScheme extends Scheme<SchemeType.CHECKBOX> {}
+
+export interface LastEditedTimeScheme extends Scheme<SchemeType.LAST_EDITED_TIME> {}
+
+export interface MultiSelectScheme extends Scheme<SchemeType.MULTI_SELECT> {
+  options?: {
+    // TODO: Color type
+    color: string
+    id: string
+    value: string
+  }[]
 }
 
-export interface FramerBlockValue extends BlockValue<BlockType.FRAMER>, BaseEmbedBlockType {
+export interface DateScheme extends Scheme<SchemeType.DATE> {
+  date_format: 'relative' | 'YYYY/MM/DD' | 'DD/MM/YYYY' | 'MM/DD/YYYY' | 'MMM DD, YYYY'
 }
 
-export interface PdfBlockValue extends BlockValue<BlockType.PDF>, BaseEmbedBlockType {
-}
+export interface CretaedTimeScheme extends Scheme<SchemeType.CREATED_TIME> {}
 
-export interface InvisionBlockValue extends BlockValue<BlockType.INVISION>, BaseEmbedBlockType {
-}
-
-export interface TweetBlockValue extends BlockValue<BlockType.TWEET>, BaseEmbedBlockType {
-}
-
-export interface TypeformBlockValue extends BlockValue<BlockType.TYPEFORM>, BaseEmbedBlockType {
-}
+export interface TextScheme extends Scheme<SchemeType.TEXT> {}
 
 export interface CollectionValue {
   alive: boolean
@@ -341,14 +369,21 @@ export interface CollectionValue {
     [schemeId: string]: {
       date_format: string | undefined // only exits when type is date
       name: string
-      type: string
+      type: SchemeType
     }
   }
 }
 
 export interface CollectionViewValue {
   alive: boolean
-  format: {}
+  format: {
+    table_wrap: boolean
+    table_properties: {
+      width: number
+      visible: boolean
+      property: string
+    }[]
+  }
   id: string
   name: string
   version: number
@@ -360,12 +395,12 @@ export interface CollectionViewValue {
 }
 
 export interface CollectionQuery {
-  filter_operator: string
+  filter_operator: 'and' | 'or'
   filter?: {
     comparator: string
     id: string
     property: string
-    type: string
+    type: SchemeType
   }[]
   sort?: {
     id: string
@@ -375,7 +410,7 @@ export interface CollectionQuery {
   }[]
   aggregate?: {
     id: string
-    aggregation_type: string
+    aggregation_type: 'count'
     property: string
     type: string
     view_type: string
