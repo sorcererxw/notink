@@ -1,0 +1,9 @@
+node_modules/
+.idea/
+npm-debug.log
+test/
+tsconfig.json
+tslint.json
+.vscode/
+.prettierrc
+.prettierignore
