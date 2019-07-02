@@ -1,6 +1,6 @@
 {
   "name": "notink",
-  "version": "1.0.0-alpha.9",
+  "version": "1.0.0-alpha.11",
   "description": "A full function Notion.so api library.",
   "main": "dist/lib/index.js",
   "types": "dist/types/index.d.ts",
@@ -10,9 +10,10 @@
     "compile": "tsc",
     "clean": "rm -rf dist",
     "purge": "rm -rf package-lock.json node_modules && npm run clean",
-    "build": "npm run clean && npm run lint && npm run compile",
     "prettier": "prettier --config .prettierrc --write '**/*'",
-    "prepublish": "npm run build",
+    "prepare": "npm run clean && npm run lint && npm run test",
+    "build": "npm run compile",
+    "prepublishOnly": "npm run build",
     "postpublish": "npm run clean"
   },
   "repository": {
@@ -46,6 +47,22 @@
     "tslint": "^5.18.0",
     "tslint-jike-node": "0.0.17",
     "typescript": "^3.5.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(\\.|/)test\\.ts$",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ]
   },
   "husky": {
     "hooks": {
