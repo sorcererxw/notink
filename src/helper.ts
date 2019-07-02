@@ -27,6 +27,24 @@ function mergeRecordMap<T>(
   }
 }
 
+/**
+ * example: https://www.notion.so/notinktest/Get-Started-1d748958865c4cf397d6c996756cd77e
+ * @param blockId: 1d748958865c4cf397d6c996756cd77e
+ * @return real block id: 1d748958-865c-4cf3-97d6-c996756cd77e
+ */
+export function getFullBlockId(blockId: string): string {
+  if (blockId.match('^[a-zA-Z0-9]+$')) {
+    return [
+      blockId.substr(0, 8),
+      blockId.substr(8, 4),
+      blockId.substr(12, 4),
+      blockId.substr(16, 4),
+      blockId.substr(20, 32),
+    ].join('-')
+  }
+  return blockId
+}
+
 export async function loadFullPageChunk(pageId: string): Promise<PageChunk> {
   let cursor: { stack: Cursor[] } = { stack: [] }
   let chunkNumber = 0
@@ -62,7 +80,7 @@ export async function loadBlockTree(pageId: string): Promise<BlockNode> {
     if (!pageChunk.recordMap.block) {
       return
     }
-    const value: BlockValue<BlockType> = pageChunk.recordMap.block[blockId].value
+    const value = pageChunk.recordMap.block[blockId].value
     const content: string[] = (value as any).content
     const children = content ? _.compact(content.map(it => getBlockNode(it))) : undefined
     return {
@@ -72,5 +90,20 @@ export async function loadBlockTree(pageId: string): Promise<BlockNode> {
   }
   return getBlockNode(pageId)!
 }
+
+// export async function loadCollectionItems<T>(data: {
+//   collectionId: string
+//   collectionViewId: string
+//   loader: {
+//     limit: number
+//     loadContentCover: boolean
+//     type: string
+//     userLocale: string
+//     userTimeZone: string
+//   }
+//   query: CollectionQuery
+// }): Promise<T[]> {
+//
+// }
 
 export {}

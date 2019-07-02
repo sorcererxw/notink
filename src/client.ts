@@ -1,16 +1,11 @@
 import fetch from 'node-fetch'
 import {
   BlockId,
-  BlockType,
-  BlockValue,
   CollectionQuery,
-  CollectionValue,
-  CollectionViewValue,
   Cursor,
   PageChunk,
+  RecordMap,
   RecordValue,
-  RoleEntry,
-  SpaceValue,
   UserId,
 } from './types'
 
@@ -58,12 +53,7 @@ export async function queryCollection(data: {
   }
   query: CollectionQuery
 }): Promise<{
-  recordMap: {
-    block: { [blockId: string]: RoleEntry<BlockValue<BlockType>> }
-    collection: { [collectionId: string]: RoleEntry<CollectionValue> }
-    collection_view: { [viewId: string]: RoleEntry<CollectionViewValue> }
-    space: { [spaceId: string]: RoleEntry<SpaceValue> }
-  }
+  recordMap: RecordMap
   result: {
     type: string
     total: number
