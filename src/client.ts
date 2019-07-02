@@ -7,7 +7,8 @@ import {
   CollectionValue,
   CollectionViewValue,
   Cursor,
-  NotionUserValue,
+  PageChunk,
+  RecordValue,
   RoleEntry,
   SpaceValue,
   UserId,
@@ -41,14 +42,7 @@ export async function loadPageChunk(data: {
   pageId: string
   verticalColumns: boolean
   cursor: { stack: Cursor[] }
-}): Promise<{
-  cursor: { stack: Cursor[] }
-  recordMap: {
-    block: { [blockId: string]: RoleEntry<BlockValue<BlockType>> }
-    notion_user: { [userId: string]: RoleEntry<NotionUserValue> }
-    space: { [spaceId: string]: RoleEntry<SpaceValue> }
-  }
-}> {
+}): Promise<PageChunk> {
   return _post('/loadPageChunk', data)
 }
 
@@ -83,73 +77,16 @@ export async function queryCollection(data: {
   return _post('/queryCollection', data)
 }
 
-export async function getReordValues(data: {
+/**
+ * get record value from specific db table
+ * @param data
+ */
+export async function getRecordValues(data: {
   requests: {
     id: string
     table: string
   }[]
-}): Promise<{
-  result: {
-    role: string
-    value:
-      | {
-          clipper_onboarding_completed: boolean
-          email: string
-          family_name: string
-          given_name: string
-          id: string
-          mobile_onboarding_completed: boolean
-          onboarding_completed: boolean
-          profile_photo: string
-          version: number
-        }
-      | {
-          id: string
-          version: number
-          space_views: string[]
-        }
-      | {
-          id: string
-          version: number
-          settings: {
-            created_evernote_getting_started: boolean
-            locale: string
-            persona: string
-            signup_time: number
-            start_day_of_week: number
-            time_zone: string
-            use_case: string
-            used_android_app: boolean
-            used_desktop_web_app: boolean
-            used_mac_app: boolean
-            used_mobile_web_app: boolean
-            used_windows_app: boolean
-            user_case: string
-          }
-        }
-      | {
-          alive: boolean
-          type: string
-          version: number
-          parent_table: string
-          parent_id: string
-          last_edited_time: number
-          last_edited_by: string
-          id: string
-          created_by: string
-          created_time: number
-          content: string[]
-          permission: {
-            role: string
-            type: string
-            user_id: string | undefined
-          }[]
-          properties: {
-            title: string[][]
-          }
-        }
-  }[]
-}> {
+}): Promise<RecordValue[]> {
   return _post('/getRecordValues', data)
 }
 

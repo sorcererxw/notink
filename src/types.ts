@@ -48,6 +48,10 @@ export const enum BlockType {
   TABLE_OF_CONTENTS = 'table_of_contents',
 }
 
+export const enum CollectionViewType {
+  LIST = 'list',
+}
+
 export const enum TextStyleType {
   BOLD = 'b',
   ITALIC = 'i',
@@ -61,6 +65,17 @@ export type UserId = string
 export type BlockId = string
 
 type RichText = [string, [TextStyleType, string?][]?][]
+
+export interface PageChunk {
+  cursor: { stack: Cursor[] }
+  recordMap: {
+    block?: { [blockId: string]: RoleEntry<BlockValue<BlockType>> }
+    notion_user?: { [userId: string]: RoleEntry<NotionUserValue> }
+    space?: { [spaceId: string]: RoleEntry<SpaceValue> }
+    collection?: { [collectionId: string]: RoleEntry<CollectionValue> }
+    collection_view?: { [collectionViewId: string]: RoleEntry<CollectionViewValue> }
+  }
+}
 
 export interface RoleEntry<T> {
   role: RoleType
@@ -106,13 +121,13 @@ export interface BlockValue<T extends BlockType> {
   version: number
 }
 
-interface BaseTextBlockValue {
+export interface BaseTextBlockValue {
   properties?: {
     title: [string, [TextStyleType, string?][]?][]
   }
 }
 
-interface BasePermissionValue {
+export interface BasePermissionValue {
   permissions: {
     role: RoleType
     type: 'user_permission' | 'public_permission'
@@ -120,7 +135,7 @@ interface BasePermissionValue {
   }[]
 }
 
-interface BaseEmbedBlockType {
+export interface BaseEmbedBlockType {
   format?: {
     block_width: number
     block_height?: number
@@ -136,6 +151,10 @@ interface BaseEmbedBlockType {
   }
 }
 
+export interface BaseContainerType {
+  content?: BlockId[]
+}
+
 export interface TableOfContentsBlockValue extends BlockValue<BlockType.TABLE_OF_CONTENTS> {
   format?: {
     block_color: string
@@ -144,15 +163,13 @@ export interface TableOfContentsBlockValue extends BlockValue<BlockType.TABLE_OF
 
 export interface BulletedListBlockValue
   extends BlockValue<BlockType.BULLETED_LIST>,
-    BaseTextBlockValue {
-  content?: BlockId[]
-}
+    BaseTextBlockValue,
+    BaseContainerType {}
 
 export interface NumberedListBlockValue
   extends BlockValue<BlockType.NUMBERED_LIST>,
-    BaseTextBlockValue {
-  content?: BlockId[]
-}
+    BaseTextBlockValue,
+    BaseContainerType {}
 
 export interface ToDoBlockValue extends BlockValue<BlockType.TO_DO> {
   properties?: {
@@ -170,9 +187,10 @@ export interface CodeBlockValue extends BlockValue<BlockType.CODE> {
   }
 }
 
-export interface ToggleBlockValue extends BlockValue<BlockType.TOGGLE>, BaseTextBlockValue {
-  content?: BlockId[]
-}
+export interface ToggleBlockValue
+  extends BlockValue<BlockType.TOGGLE>,
+    BaseTextBlockValue,
+    BaseContainerType {}
 
 export interface CollectionViewBlockValue extends BlockValue<BlockType.COLLECTION_VIEW> {
   view_ids: string[]
@@ -241,9 +259,9 @@ export interface VideoBlockValue extends BlockValue<BlockType.VIDEO>, BaseEmbedB
 
 export interface EquationBlockValue extends BlockValue<BlockType.EQUATION>, BaseTextBlockValue {}
 
-export interface ColumnListBlockValue extends BlockValue<BlockType.COLUMN_LIST> {
-  content?: BlockId[]
-}
+export interface ColumnListBlockValue
+  extends BlockValue<BlockType.COLUMN_LIST>,
+    BaseContainerType {}
 
 export interface FileBlockValue extends BlockValue<BlockType.FILE> {
   file_ids?: string[]
@@ -352,7 +370,7 @@ export interface TextScheme extends Scheme<SchemeType.TEXT> {}
 export interface CollectionValue {
   alive: boolean
   cover: string
-  file_ids: string[]
+  file_ids?: string[]
   format: {
     collection_cover_position: number
     collection_page_properties: {
@@ -387,7 +405,7 @@ export interface CollectionViewValue {
   id: string
   name: string
   version: number
-  type: string
+  type: CollectionViewType
   parent_table: string
   parent_id: string
   page_sort: string[]
@@ -415,6 +433,34 @@ export interface CollectionQuery {
     type: string
     view_type: string
   }[]
+}
+
+export type RecordValue = RoleEntry<any>
+
+export interface UserSettingsValue {
+  id: string
+  version: number
+  space_views: string[]
+}
+
+export interface UserRootValue {
+  id: string
+  version: number
+  settings: {
+    created_evernote_getting_started: boolean
+    locale: string
+    persona: string
+    signup_time: number
+    start_day_of_week: number
+    time_zone: string
+    use_case: string
+    used_android_app: boolean
+    used_desktop_web_app: boolean
+    used_mac_app: boolean
+    used_mobile_web_app: boolean
+    used_windows_app: boolean
+    user_case: string
+  }
 }
 
 export interface NotionUserValue {
