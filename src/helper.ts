@@ -1,5 +1,14 @@
-import { BlockType, BlockValue, Cursor, PageChunk } from './types'
-import { loadPageChunk } from './client'
+import {
+  BlockType,
+  BlockValue,
+  CollectionItem,
+  CollectionQuery,
+  Cursor,
+  PageBlockValue,
+  PageChunk,
+  RoleEntry,
+} from './types'
+import { loadPageChunk, queryCollection } from './client'
 import * as _ from 'lodash'
 
 export interface BlockNode {
@@ -91,19 +100,53 @@ export async function loadBlockTree(pageId: string): Promise<BlockNode> {
   return getBlockNode(pageId)!
 }
 
-// export async function loadCollectionItems<T>(data: {
-//   collectionId: string
-//   collectionViewId: string
-//   loader: {
-//     limit: number
-//     loadContentCover: boolean
-//     type: string
-//     userLocale: string
-//     userTimeZone: string
-//   }
-//   query: CollectionQuery
-// }): Promise<T[]> {
-//
-// }
+export async function loadCollectionItems(data: {
+  collectionId: string
+  collectionViewId: string
+  loader: {
+    limit: number
+    loadContentCover: boolean
+    type: string
+    userLocale: string
+    userTimeZone: string
+  }
+  query: CollectionQuery
+}): Promise<CollectionItem[]> {
+  let queryResult = await queryCollection(data)
+  if (queryResult.result.total > data.loader.limit) {
+    data.loader.limit = Math.ceil(queryResult.result.total / 70) * 70
+    queryResult = await queryCollection(data)
+  }
+  if (
+    queryResult.recordMap.collection === undefined ||
+    queryResult.recordMap.collection_view === undefined
+  ) {
+    return []
+  }
+  const collection = queryResult.recordMap.collection[data.collectionId]
+  const collectionView = queryResult.recordMap.collection_view[data.collectionViewId]
+  const block = queryResult.recordMap.block
+  if (collection === undefined || collectionView === undefined || block === undefined) {
+    return []
+  }
+  const schema = collection.value.schema
+  return collectionView.value.page_sort
+    .map(it => block[it] as RoleEntry<PageBlockValue>)
+    .filter(it => !!it)
+    .map(it => {
+      const properties: { [key: string]: any } = it.value.properties ? it.value.properties : {}
+      const result: CollectionItem = {
+        page: it,
+        properties: {},
+      }
+      for (const k of Object.keys(schema)) {
+        result.properties[k] = {
+          value: properties[schema[k].name],
+          schema: schema[k],
+        }
+      }
+      return result
+    })
+}
 
 export {}

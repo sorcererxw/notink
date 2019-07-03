@@ -112,6 +112,7 @@ export interface PageBlockValue extends BlockValue<BlockType.PAGE>, BasePermissi
     page_cover?: string
     page_cover_position?: number // [0-1] proportion
   }
+  properties?: { [key: string]: any }
 }
 
 export interface BookmarkBlockValue extends BlockValue<BlockType.BOOKMARK> {

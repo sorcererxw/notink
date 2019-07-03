@@ -1,5 +1,6 @@
-import { SchemeType } from './scheme'
-import { CollectionViewType } from './common'
+import { Scheme, SchemeType } from './scheme'
+import { CollectionViewType, RoleEntry } from './common'
+import { PageBlockValue } from './block'
 
 export interface CollectionValue {
   alive: boolean
@@ -17,8 +18,8 @@ export interface CollectionValue {
   name: string[][]
   parent_id: string
   parent_table: string
-  scheme: {
-    [schemeId: string]: {
+  schema: {
+    [schemaId: string]: {
       date_format: string | undefined // only exits when type is date
       name: string
       type: SchemeType
@@ -67,4 +68,14 @@ export interface CollectionQuery {
     type: string
     view_type: string
   }[]
+}
+
+export interface CollectionItem {
+  page: RoleEntry<PageBlockValue>
+  properties: {
+    [key: string]: {
+      value: any
+      schema: Scheme<SchemeType>
+    }
+  }
 }
