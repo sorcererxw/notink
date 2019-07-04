@@ -1,17 +1,10 @@
 {
-  "extends": [
-    "tslint-jike-node"
-  ],
+  "extends": ["tslint-jike-node"],
   "rules": {
-    "file-name-casing": [
-      false,
-      "camel-case"
-    ],
+    "file-name-casing": [false, "camel-case"],
     "no-empty-interface": false
   },
   "linterOptions": {
-    "exclude": [
-      "dist/**/*.ts"
-    ]
+    "exclude": ["dist/**/*.ts"]
   }
 }
