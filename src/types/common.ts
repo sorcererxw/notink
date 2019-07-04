@@ -1,5 +1,11 @@
 import { CollectionValue, CollectionViewValue } from './collection'
 import { BlockValue } from './block'
+import { RichText } from './text'
+
+export type UserId = string
+export type BlockId = string
+export type CommentId = string
+export type DiscussionId = string
 
 export const enum RoleType {
   EDITOR = 'editor',
@@ -113,12 +119,26 @@ export interface NotionUserValue {
   version: number
 }
 
-export type UserId = string
-export type BlockId = string
+export interface CommentValue {
+  alive: boolean
+  created_by: UserId
+  created_time: number
+  id: CommentId
+  last_edited_time: number
+  parent_id: string
+  parent_table: 'discussion'
+  text: RichText
+  version: number
+}
 
-export interface PageChunk {
-  cursor: { stack: Cursor[] }
-  recordMap: RecordMap
+export interface DiscussionValue {
+  id: string
+  parent_id: string
+  parent_table: string
+  resolved: boolean
+  version: number
+  comments: CommentId[]
+  context: [string, ['m', DiscussionId][]][]
 }
 
 export interface RecordMap {
@@ -127,6 +147,13 @@ export interface RecordMap {
   space?: { [spaceId: string]: RoleEntry<SpaceValue> }
   collection?: { [collectionId: string]: RoleEntry<CollectionValue> }
   collection_view?: { [collectionViewId: string]: RoleEntry<CollectionViewValue> }
+  discussion?: { [discussionId: string]: RoleEntry<DiscussionValue> }
+  comment?: { [commentId: string]: RoleEntry<CommentValue> }
+}
+
+export interface PageChunk {
+  cursor: { stack: Cursor[] }
+  recordMap: RecordMap
 }
 
 export interface RoleEntry<T> {

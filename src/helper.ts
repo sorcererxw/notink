@@ -105,8 +105,8 @@ export async function loadCollectionItems(data: {
   collectionViewId: string
   loader: {
     limit: number
+    type: 'table'
     loadContentCover: boolean
-    type: string
     userLocale: string
     userTimeZone: string
   }
@@ -126,7 +126,7 @@ export async function loadCollectionItems(data: {
   const collection = queryResult.recordMap.collection[data.collectionId]
   const collectionView = queryResult.recordMap.collection_view[data.collectionViewId]
   const block = queryResult.recordMap.block
-  if (collection === undefined || collectionView === undefined || block === undefined) {
+  if (block === undefined) {
     return []
   }
   const schema = collection.value.schema
@@ -134,7 +134,7 @@ export async function loadCollectionItems(data: {
     .map(it => block[it] as RoleEntry<PageBlockValue>)
     .filter(it => !!it)
     .map(it => {
-      const properties: { [key: string]: any } = it.value.properties ? it.value.properties : {}
+      const properties = it.value.properties ? it.value.properties : {}
       const result: CollectionItem = {
         page: it,
         properties: {},

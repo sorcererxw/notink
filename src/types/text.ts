@@ -7,6 +7,12 @@ export const enum TextStyleType {
   LINK = 'a',
   HIGH_LIGHT = 'h',
   DELETED = 's',
+  AT = '‣',
+}
+
+export const enum AtType {
+  USER = 'u',
+  PAGE = 'p',
 }
 
 type SimpleStyleType = [
@@ -15,5 +21,9 @@ type SimpleStyleType = [
 
 type HighlightStyleType = [TextStyleType.HIGH_LIGHT, ColorType | BackgroundType]
 type LinkStyleType = [TextStyleType.LINK, string]
+type AtStyleText = [TextStyleType.AT, [AtType, string][]]
 
-export type RichText = [string, (SimpleStyleType | HighlightStyleType | LinkStyleType)[]?][]
+export type RichText = [
+  string,
+  (SimpleStyleType | HighlightStyleType | LinkStyleType | AtStyleText)[]?,
+][]
