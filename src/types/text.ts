@@ -26,4 +26,4 @@ type AtStyleText = [TextStyleType.AT, [AtType, string][]]
 export type RichText = [
   string,
   (SimpleStyleType | HighlightStyleType | LinkStyleType | AtStyleText)[]?,
-][]
+]

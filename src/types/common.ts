@@ -127,7 +127,7 @@ export interface CommentValue {
   last_edited_time: number
   parent_id: string
   parent_table: 'discussion'
-  text: RichText
+  text: RichText[]
   version: number
 }
 

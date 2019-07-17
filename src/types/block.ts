@@ -66,7 +66,7 @@ export interface NumberedListBlockValue
 
 export interface ToDoBlockValue extends BlockValue<BlockType.TO_DO> {
   properties?: {
-    title?: RichText
+    title?: RichText[]
     checked?: ['Yes' | 'No'][]
   }
 }
@@ -76,7 +76,7 @@ export interface DividerBlockValue extends BlockValue<BlockType.DIVIDER> {}
 export interface CodeBlockValue extends BlockValue<BlockType.CODE> {
   properties?: {
     language: string[][] // for code block to specific programming language
-    title?: RichText
+    title?: RichText[]
   }
 }
 

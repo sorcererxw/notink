@@ -1,6 +1,6 @@
 {
   "name": "notink",
-  "version": "1.0.0-alpha.12",
+  "version": "1.0.2",
   "description": "A full function Notion.so api library.",
   "main": "dist/lib/index.js",
   "types": "dist/types/index.d.ts",
